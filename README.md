@@ -1,7 +1,10 @@
 # Wsl2-AmdGpu-Chat
 Status: Alpha
 - Trying to make the best chatbot I can, for non-Rocm Amd GPU on Wsl2.
-- After creation, improve with all these python 
+- It will be designed/tested with Qwen2.5 72b in 4Bit.
+- It will be intended to run optimally on given hardware setups, offloading as many layers as is safe to the GPU.
+- After successfull creation, then expand to be able to use, chunking and rag (or whatever is better).
+- Keep adding features, research on internet is priority, or local files.
 
 ### DESCRIPTION:
 The Wsl2-AmdGpu-Chat is a Python-based chatbot interface that leverages GGUF models for inference using AMD GPU acceleration within a WSL2 environment. It dynamically loads models from a specified directory, presents them to the user for selection, and provides an interactive conversational interface. The program ensures proper configuration persistence, allowing users to save and reuse settings across sessions.
