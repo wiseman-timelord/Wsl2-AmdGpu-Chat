@@ -14,16 +14,6 @@ The Wsl2-AmdGpu-Chat is a Python-based chatbot interface that leverages GGUF mod
 - Utility Functions: Centralized utility functions for configuration management and file handling.
 - Easy Setup and Execution: A single batch file handles WSL2 initialization, Python environment setup, and running of the chatbot.
 
-### FILES STRUCTURE:
-```
-.\scripts
-.\Wsl2-AmdGpu-Chat.Bat
-.\wsl2_amdgpu_chat.py
-.\scripts\menus_displays.py
-.\scripts\model_interaction.py
-.\scripts\utility_general.py
-```
-
 ### DEVELOPMENT:
 - Outstanding Work on the Scripts...
 1. **Update the Main Script (`wsl2_amdgpu_chat.py`)**:
@@ -45,3 +35,13 @@ The Wsl2-AmdGpu-Chat is a Python-based chatbot interface that leverages GGUF mod
    - Test the Python scripts and ensure seamless integration with the batch file.
    - Test multiple GGUF models in the `./Models` folder to ensure model loading and inference work as expected.
    - Test persistence handling for WSL distribution and other future settings in `persistence.json`.
+
+### FILES STRUCTURE:
+```
+.\scripts
+.\Wsl2-AmdGpu-Chat.Bat
+.\wsl2_amdgpu_chat.py
+.\scripts\menus_displays.py
+.\scripts\model_interaction.py
+.\scripts\utility_general.py
+```
