@@ -2,7 +2,7 @@
 Status: Alpha
 - Trying to make the best chatbot I can, for non-Rocm Amd GPU on Wsl2.
 - It will be designed/tested with Qwen2.5.
-- It will be intended to run optimally on given hardware setups, offloading as many layers as is safe to the GPU.
+- It will be intended to run optimally on given hardware setups, offloading as many layers as is safe to the GPU. What options are there in WSL for detection of shaders/gpu memory? Are there libraries for this? Or built in.
 - After successfull creation, then expand to be able to use, chunking and rag (or whatever is better).
 - Keep adding features, research on internet is priority, or local files.
 
