@@ -23,3 +23,7 @@ def load_json(file_path):
 def write_json(data, file_path):
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
+
+def load_persistence_txt(txt_file):
+    with open(txt_file, 'r') as f:
+        return dict(line.strip().split('=') for line in f if '=' in line)

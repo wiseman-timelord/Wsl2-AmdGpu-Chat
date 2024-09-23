@@ -10,7 +10,8 @@ timeout /t 1 >nul
 
 :: Globals Block - Customize here if needed
 set "PYTHON_EXE_TO_USE=python3"
-set "REQUIREMENTS_LIST=transformers==4.37.0 ctransformers torch-directml psutil PyQt5"set "PERSISTENCE_FILE=./data/persistence.txt"
+set "REQUIREMENTS_LIST=transformers==4.37.0 ctransformers torch-directml psutil PyQt5"
+set "PERSISTENCE_FILE=./data/persistence.txt"
 set "WSL_DISTRIBUTION="
 set "CLBLAS_INSTALLED="
 
@@ -73,12 +74,10 @@ goto :eof
 call :main_banner
 echo     1. Run Wsl2-AmdGpu-Chat
 echo.
-echo     2. Install Python Requirements
-echo.
-echo     3. Install Github Requirements
+echo     2. Install Requirements
 echo.
 echo ========================================================================================================================
-set /p choice=Selection; Menu Options = 1-3, Exit = X: 
+set /p choice=Selection; Menu Options = 1-2, Exit = X: 
 
 if /i "!choice!"=="1" (
     echo Selected: Run Chatbot
@@ -87,11 +86,7 @@ if /i "!choice!"=="1" (
 ) else if /i "!choice!"=="2" (
     echo Selected: Install Requirements
     timeout /t 1 >nul
-    goto run_setup_install
-) else if /i "!choice!"=="3" (
-    echo Selected: Install ClBlas
-    timeout /t 1 >nul
-    goto install_clblas
+    goto install_requirements
 ) else if /i "!choice!"=="X" (
     echo Exiting...
     timeout /t 1 >nul
@@ -114,17 +109,29 @@ echo.
 pause
 goto main_menu
 
-:: Install Python Requirements in WSL2
-:run_setup_install
+:: Install Requirements
+:install_requirements
 call :main_banner
-echo Installing required Python packages...
+echo Installing Requirements...
 
-:: Upgrading pip in WSL
+:: Ensure pciutils and mesa-utils are installed
+echo Installing pciutils...
+wsl -d %WSL_DISTRIBUTION% sudo apt-get update
+wsl -d %WSL_DISTRIBUTION% sudo apt-get install -y pciutils
+echo pciutils Installed.
+timeout /t 1 >nul
+
+echo Installing mesa-utils...
+wsl -d %WSL_DISTRIBUTION% sudo apt-get install -y mesa-utils
+echo mesa-utils Installed.
+timeout /t 1 >nul
+
+:: Install Python Requirements
+echo Upgrading pip...
 wsl -d %WSL_DISTRIBUTION% %PYTHON_EXE_TO_USE% -m pip install --upgrade pip
 echo Pip Upgraded.
-echo.
+timeout /t 1 >nul
 
-:: Install each package by converting "--" to "=="
 set "errorPackages="  :: Initialize error packages list
 for %%p in (%REQUIREMENTS_LIST%) do (
     set "package=%%p"
@@ -137,7 +144,7 @@ for %%p in (%REQUIREMENTS_LIST%) do (
     ) else (
         echo !package! installed successfully.
     )
-    echo.
+    timeout /t 1 >nul
 )
 
 :: Check for package installation issues
@@ -147,35 +154,22 @@ if not "!errorPackages!"=="" (
 ) else (
     echo Requirements Installed Successfully.
 )
-
-echo.
-pause
-goto main_menu
+timeout /t 1 >nul
 
 :: Install CLBlast
-:install_clblas
-call :main_banner
 echo Installing CLBlast...
-
-:: Install necessary dependencies and clone CLBlast
-wsl -d %WSL_DISTRIBUTION% sudo apt-get install git cmake make -y
+wsl -d %WSL_DISTRIBUTION% sudo apt-get install -y git cmake make
 wsl -d %WSL_DISTRIBUTION% git clone https://github.com/CNugteren/CLBlast.git
-
-:: Build and install CLBlast
 wsl -d %WSL_DISTRIBUTION% bash -c "cd CLBlast && mkdir build && cd build && cmake .. && make && sudo make install"
+echo CLBlast Installed.
+timeout /t 1 >nul
 
 :: Update persistence to track that CLBlast is installed
-echo clblas_installed=clblast >> %PERSISTENCE_FILE%
+echo clblas_installed=true >> %PERSISTENCE_FILE%
 
-echo CLBlast installed successfully.
+echo Installation Complete.
 pause
 goto main_menu
-
-:: Invalid input, re-prompt user
-echo Invalid selection. Please choose either 1 or 2.
-pause
-goto install_clblas
-
 
 :end_of_file
 call :main_banner

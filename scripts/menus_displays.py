@@ -3,10 +3,12 @@
 # Imports
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel
 from PyQt5.QtCore import Qt
+from scripts.model_interaction import ModelManager
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, agent_manager):
         super().__init__()
+        self.agent_manager = agent_manager
         self.setWindowTitle("Wsl2g-AmdGpu-Agent")
         self.setGeometry(100, 100, 800, 600)
 
@@ -53,24 +55,17 @@ class MainWindow(QMainWindow):
     def on_submit(self):
         user_message = self.user_input.toPlainText()
         self.user_input.clear()
-        # Process user message and update chat output
-        # This will be implemented later when we integrate with the AI logic
 
-def show_main_window():
+        # Use agent_manager to process the user input and generate a response
+        response = self.agent_manager.assign_task('chat_agent', user_message)
+        if response:
+            self.chat_output.append(f"User: {user_message}")
+            self.chat_output.append(f"AI: {response}")
+        else:
+            self.chat_output.append("Error: No response from the AI.")
+
+def show_main_window(agent_manager):
     app = QApplication([])
-    main_window = MainWindow()
+    main_window = MainWindow(agent_manager)
     main_window.show()
     app.exec_()
-
-def show_model_menu(model_files):
-    # This function can be updated to use a PyQt dialog instead of console input
-    print("Multiple models found:")
-    for i, model_file in enumerate(model_files):
-        print(f"{i+1}. {model_file}")
-    
-    selection = int(input("Enter the number of the model you wish to use: ")) - 1
-    if 0 <= selection < len(model_files):
-        return model_files[selection]
-    else:
-        print("Invalid selection.")
-        return show_model_menu(model_files)  # Recurse if invalid

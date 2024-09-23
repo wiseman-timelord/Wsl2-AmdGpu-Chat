@@ -1,4 +1,4 @@
-# Script: `./scriptz/model_interaction.py`
+# Script: `./scripts/model_interaction.py`
 
 # Imports
 import os
@@ -7,31 +7,21 @@ import subprocess
 from ctransformers import AutoModelForCausalLM
 
 class ModelManager:
-    def __init__(self, available_threads):
+    def __init__(self, available_threads, gpu_memory):
         self.available_threads = available_threads
-        self.gpu_memory = self.get_available_vram()
+        self.gpu_memory = gpu_memory
         self.models = {}
         self.current_model = None
 
-    def get_available_vram(self):
+    def get_gpu_name(self):
         try:
-            # Check if glxinfo is installed
-            subprocess.run(["glxinfo"], capture_output=True, text=True, check=True)
+            result = subprocess.run(["lspci", "|", "grep", "-i", "vga"], capture_output=True, text=True, shell=True)
+            gpu_info = result.stdout.strip()
+            if gpu_info:
+                return gpu_info.split(':')[-1].strip()
         except subprocess.CalledProcessError:
-            print("glxinfo not found. Installing mesa-utils...")
-            subprocess.run(["sudo", "apt", "install", "-y", "mesa-utils"], check=True)
-
-        # Get VRAM information
-        result = subprocess.run(["glxinfo", "|", "grep", "Video Memory"], capture_output=True, text=True, shell=True)
-        vram_info = result.stdout.strip()
-
-        if vram_info:
-            # Extract VRAM size in MB
-            vram_mb = int(vram_info.split()[-2])
-            return vram_mb
-        else:
-            print("Unable to determine VRAM size. Defaulting to 4GB.")
-            return 4096  # Default to 4GB if unable to determine
+            print("Unable to determine GPU name. Defaulting to 'Unknown GPU'.")
+        return "Unknown GPU"
 
     def scan_for_models(self, model_directory='./Models'):
         model_files = [f for f in os.listdir(model_directory) if f.endswith('.gguf')]
@@ -48,20 +38,15 @@ class ModelManager:
             model_file = model_files[model_name]
             print(f"Loading model: {model_file}")
             
-            # Load the model to get its configuration
             temp_model = AutoModelForCausalLM.from_pretrained(model_file, model_type="qwen2")
-            
-            # Get the number of layers and model size
             num_layers = temp_model.config.num_layers
             model_size = os.path.getsize(model_file) / (1024 * 1024)  # Size in MB
             
-            # Calculate the number of layers that can fit in GPU memory
             layer_size = model_size / num_layers
             gpu_layers = min(num_layers, math.floor(self.gpu_memory / layer_size))
             
             print(f"Model has {num_layers} layers. Loading {gpu_layers} layers to GPU.")
             
-            # Load the model with the calculated number of GPU layers
             model = AutoModelForCausalLM.from_pretrained(
                 model_file,
                 model_type="qwen2",

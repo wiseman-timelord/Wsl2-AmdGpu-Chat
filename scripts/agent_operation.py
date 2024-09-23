@@ -2,18 +2,24 @@
 
 # Imports
 import threading
-from scripts.model_interaction import load_model, interact_with_model
+from scripts.model_interaction import ModelManager
 
 class Agent:
-    def __init__(self, name, model_file, purpose):
+    def __init__(self, name, model_manager, model_file, purpose):
         self.name = name
+        self.model_manager = model_manager
         self.model_file = model_file
         self.purpose = purpose
-        self.model, self.tokenizer = load_model(model_file)
         self.thread = None
         self.is_running = False
+        self.model = None
+
+    def load_model(self):
+        self.model = self.model_manager.load_model(self.model_file)
 
     def start(self):
+        if not self.model:
+            self.load_model()
         self.is_running = True
         self.thread = threading.Thread(target=self.run)
         self.thread.start()
@@ -25,21 +31,24 @@ class Agent:
 
     def run(self):
         while self.is_running:
-            # Agent's main loop
+            # Main agent loop for processing tasks
             pass
 
     def process_task(self, task):
-        response = interact_with_model(self.model, self.tokenizer, task)
+        if not self.model:
+            self.load_model()
+        response = self.model_manager.interact_with_model(task)
         return response
 
 class AgentManager:
-    def __init__(self):
+    def __init__(self, model_manager):
+        self.model_manager = model_manager
         self.agents = {}
 
     def create_agent(self, name, model_file, purpose):
-        agent = Agent(name, model_file, purpose)
+        agent = Agent(name, self.model_manager, model_file, purpose)
         self.agents[name] = agent
-        return agent
+        agent.start()
 
     def get_agent(self, name):
         return self.agents.get(name)
@@ -57,18 +66,9 @@ class AgentManager:
 
 # Command execution functions
 def execute_system_command(command):
-    # Implementation for executing system commands
+    # To implement system command execution
     pass
 
 def execute_python_command(command):
-    # Implementation for executing Python commands
-    pass
-
-# Agent operation functions
-def create_project_plan(agent_manager, project_description):
-    # Implementation for creating a project plan using appropriate agents
-    pass
-
-def execute_task(agent_manager, task):
-    # Implementation for executing a single task using appropriate agents
+    # To implement Python command execution
     pass
