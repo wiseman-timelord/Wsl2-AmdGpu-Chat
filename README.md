@@ -29,9 +29,7 @@ The Wsl2g-AmdGpu-Agent is a Python-based chatbot interface designed to leverage 
 
     1. Run Wsl2-AmdGpu-Chat
 
-    2. Install Python Requirements
-
-    3. Install Github Requirements
+    2. Install Requirements
 
 
 ========================================================================================================================
