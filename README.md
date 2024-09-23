@@ -7,7 +7,7 @@ Status: Alpha
 - Keep adding features, research on internet is priority, or local files.
 
 ### DESCRIPTION:
-The Wsl2-AmdGpu-Chat is a Python-based chatbot interface that leverages GGUF models for inference using AMD GPU acceleration within a WSL2 environment. It dynamically loads models from a specified directory, presents them to the user for selection, and provides an interactive conversational interface. The program ensures proper configuration persistence, allowing users to save and reuse settings across sessions.
+The Wsl2-AmdGpu-Chat is a Python-based chatbot interface that leverages GGUF models for inference using AMD GPU acceleration within a WSL2 environment. It dynamically loads models from a specified directory, presents them to the user for selection, and provides an interactive conversational interface. The program ensures proper configuration persistence, allowing users to save and reuse settings across sessions. I have done similar projects before, but the idea here is to ensure that binaries are not used, so that we can use other libraries intended for combined use with torch/ctransformers, or whatever library I go with in the end, I will investigate them.
 
 ### FEATURES:
 - Dynamic Model Loading: Automatically scans the ./Models folder for available .gguf models and loads the selected one for inference.
