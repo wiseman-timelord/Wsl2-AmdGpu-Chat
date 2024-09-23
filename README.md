@@ -5,18 +5,20 @@ Status: Alpha - Trying to make the best chatbot/agent I can, for my AMD hardware
 - After successfull creation, then expand to be able to use, chunking and rag (or whatever is better). 
 - Keep adding features, research on internet is priority, or local files.
 
-### DESCRIPTION:
-The Wsl2g-AmdGpu-Agent is a Python-based chatbot interface that leverages GGUF models for inference using AMD GPU acceleration within a WSL2 environment. It dynamically loads models from a specified directory, presents them to the user for selection, and provides an interactive conversational interface. The program ensures proper configuration persistence, allowing users to save and reuse settings across sessions. I have done similar projects before, but the idea here is to ensure that binaries are not used, so that we can use other libraries intended for combined use with torch/ctransformers, or whatever library I go with in the end, I will investigate them.
+#### DESCRIPTION:
+The Wsl2g-AmdGpu-Agent is a Python-based chatbot interface designed to leverage GGUF models for inference using AMD GPU acceleration within a WSL2 environment. This project aims to provide a seamless and efficient conversational AI experience by dynamically loading models from a specified directory, presenting them to the user for selection, and offering an interactive conversational interface. The program ensures proper configuration persistence, allowing users to save and reuse settings across sessions. Unlike previous projects, this implementation avoids the use of binaries, enabling the integration of various libraries such as torch/ctransformers, ensuring flexibility and compatibility with future updates.
 
-### FEATURES:
-- Dynamic Model Loading: Automatically scans the ./Models folder for available .gguf models and loads the selected one for inference.
-- GPU-Accelerated Inference: Uses the ctransformers library to take advantage of AMD GPU acceleration for fast and efficient text generation.
-- Interactive Chat Interface: Allows users to interact with the loaded model in a conversational loop.
-- Model Selection Menu: Displays a dynamic menu for users to choose from multiple models, if available.
-- Configuration Persistence: Saves user settings, such as the selected WSL distribution, in a persistent JSON file (persistence.json), ensuring settings are maintained across sessions.
-- Batch Script Integration: Works seamlessly with a Windows batch script for WSL2 environment setup, model installation, and script execution.
-- Utility Functions: Centralized utility functions for configuration management and file handling.
-- Easy Setup and Execution: A single batch file handles WSL2 initialization, Python environment setup, and running of the chatbot.
+#### FEATURES:
+- **Dynamic Model Loading**: Automatically scans the `./Models` folder for available `.gguf` models and loads the selected one for inference.
+- **GPU-Accelerated Inference**: Utilizes the `ctransformers` library to take advantage of AMD GPU acceleration for fast and efficient text generation.
+- **Interactive Chat Interface**: Provides a user-friendly interface for interacting with the loaded model in a conversational loop.
+- **Model Selection Menu**: Displays a dynamic menu for users to choose from multiple models, if available.
+- **Configuration Persistence**: Saves user settings, such as the selected WSL distribution, in a persistent JSON file (`persistence.json`), ensuring settings are maintained across sessions.
+- **Batch Script Integration**: Works seamlessly with a Windows batch script for WSL2 environment setup, model installation, and script execution.
+- **Utility Functions**: Centralized utility functions for configuration management and file handling.
+- **Easy Setup and Execution**: A single batch file handles WSL2 initialization, Python environment setup, and running of the chatbot.
+- **Resource Optimization**: Dynamically allocates CPU threads and GPU VRAM based on system usage, ensuring optimal performance.
+- **Detailed Installation Process**: Streamlined installation process with clear feedback at each step, ensuring a smooth setup experience.
 
 ### PREVIEW:
 ```
