@@ -1,9 +1,9 @@
 # Wsl2g-AmdGpu-Agent
 Status: Alpha
-- Trying to make the best chatbot I can, for non-Rocm Amd GPU on Wsl2.
-- It will be designed/tested with Qwen2.5.
-- It will be intended to run optimally on given hardware setups, offloading as many layers as is safe to the GPU. What options are there in WSL for detection of shaders/gpu memory? Are there libraries for this? Or built in.
-- After successfull creation, then expand to be able to use, chunking and rag (or whatever is better).
+- Trying to make the best chatbot/agent I can, for NonRocm-AmdGpu/Avx2 on Wsl2-Python3.
+- It will be designed/tested with Qwen2.5; `Qwen2.5-7B.Q6_K.gguf` (descriptive text generation and user interaction) and `Qwen2.5-Coder-7B.Q6_K.gguf` (programming and wsl system commands) and `Qwen2.5-7B-Instruct.Q6_K.gguf` (processing of text). 
+- It will be intended to run optimally on given hardware setups, offloading as many layers as is safe to the GPU. Free ram is calculated and layers are dynamically calculated depending upon the model, and assigned.
+- After successfull creation, then expand to be able to use, chunking and rag (or whatever is better). 
 - Keep adding features, research on internet is priority, or local files.
 
 ### DESCRIPTION:
