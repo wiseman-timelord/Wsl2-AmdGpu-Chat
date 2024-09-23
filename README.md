@@ -1,4 +1,4 @@
-# Wsl2-AmdGpu-Chat
+# Wsl2g-AmdGpu-Agent
 Status: Alpha
 - Trying to make the best chatbot I can, for non-Rocm Amd GPU on Wsl2.
 - It will be designed/tested with Qwen2.5.
@@ -22,7 +22,7 @@ The Wsl2-AmdGpu-Chat is a Python-based chatbot interface that leverages GGUF mod
 ### PREVIEW:
 ```
 ========================================================================================================================
-    Wsl2-AmdGpu-Chat
+    Wsl2g-AmdGpu-Agent
 ========================================================================================================================
 
 
@@ -39,7 +39,7 @@ Selection; Menu Options = 1-3, Exit = X:
 
 ### DEVELOPMENT:
 - Outstanding Work on the Scripts...
-1. Main Script - `wsl2_amdgpu_chat.py`
+1. Main Script - `wsl2g_amdgpu_agent.py`
 The main script is almost complete but still needs a few improvements:
 - **Check if the `./Models` directory exists**:
   - Add a check at the beginning to ensure the `./Models` folder exists. If it doesn't, print a helpful message and exit or create it.
@@ -90,8 +90,8 @@ The batch script looks solid, but here are a few enhancements to make it more ro
 ### FILES STRUCTURE:
 ```
 .\scripts
-.\Wsl2-AmdGpu-Chat.Bat
-.\wsl2_amdgpu_chat.py
+.\Wsl2g-AmdGpu-Agent.Bat
+.\wsl2g_amdgpu_agent.py
 .\scripts\menus_displays.py
 .\scripts\model_interaction.py
 .\scripts\utility_general.py
