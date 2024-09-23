@@ -1,4 +1,4 @@
-# Script: `./scriptz/menu_displays.py`
+# Script: `./scripts/menu_displays.py`
 
 # Imports
 def show_model_menu(model_files):

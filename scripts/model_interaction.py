@@ -16,10 +16,14 @@ def scan_for_models(model_directory='./Models'):
     else:
         return model_files  # Delegate menu display to the menu function
 
-# Load a model from the specified file
-def load_model(model_file):
+# Load a model from the specified file, with optional ClBlas support
+def load_model(model_file, use_clblas=False):
     print(f"Loading model: {model_file}")
-    model = AutoModelForCausalLM.from_pretrained(model_file)
+    
+    if use_clblas:
+        print("Using ClBlas for GPU acceleration")
+    
+    model = AutoModelForCausalLM.from_pretrained(model_file, device="gpu" if use_clblas else "cpu")
     tokenizer = model.tokenizer
     return model, tokenizer
 

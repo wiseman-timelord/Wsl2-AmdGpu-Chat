@@ -1,4 +1,4 @@
-:: Script: `Wsl2-AmdGpu-Chat.Bat`
+:: Script: `.\Wsl2-AmdGpu-Chat.Bat`
 
 :: Initialization
 @echo off
@@ -13,6 +13,7 @@ set "PYTHON_EXE_TO_USE=python3"
 set "REQUIREMENTS_LIST=transformers--4.37.0 ctransformers--latest torch-directml--latest"
 set "PERSISTENCE_FILE=./data/persistence.txt"
 set "WSL_DISTRIBUTION="
+set "CLBLAS_INSTALLED="
 
 :: DP0 TO SCRIPT BLOCK, DO NOT, MODIFY or MOVE: START
 set "ScriptDirectory=%~dp0"
@@ -38,7 +39,7 @@ if not exist %PERSISTENCE_FILE% (
         if /i "%%i"=="%WSL_DISTRIBUTION%" (
             echo Saving distribution name to persistence.txt...
             echo %WSL_DISTRIBUTION% > %PERSISTENCE_FILE%
-            goto :main_menu
+            goto :continue_script
         )
     )
     echo Error: Invalid WSL distribution entered.
@@ -50,6 +51,14 @@ if not exist %PERSISTENCE_FILE% (
     echo Using distribution: %WSL_DISTRIBUTION%
 )
 
+:: Check if ClBlas is installed and update the variable
+for /f "tokens=*" %%i in (%PERSISTENCE_FILE%) do (
+    if "%%i"=="clblas_installed=true" (
+        set CLBLAS_INSTALLED=true
+    )
+)
+
+:continue_script
 
 :: Banner Function
 :main_banner
@@ -63,12 +72,14 @@ goto :eof
 :: Main Code Begin
 :main_menu
 call :main_banner
-echo     1. Run Chatbot
+echo     1. Run Wsl2-AmdGpu-Chat
 echo.
-echo     2. Install Requirements
+echo     2. Install Python Requirements
+echo.
+echo     3. Install Github Requirements
 echo.
 echo ========================================================================================================================
-set /p choice=Selection; Menu Options = 1-2, Exit = X: 
+set /p choice=Selection; Menu Options = 1-3, Exit = X: 
 
 if /i "!choice!"=="1" (
     echo Selected: Run Chatbot
@@ -78,6 +89,10 @@ if /i "!choice!"=="1" (
     echo Selected: Install Requirements
     timeout /t 1 >nul
     goto run_setup_install
+) else if /i "!choice!"=="3" (
+    echo Selected: Install ClBlas
+    timeout /t 1 >nul
+    goto install_clblas
 ) else if /i "!choice!"=="X" (
     echo Exiting...
     timeout /t 1 >nul
@@ -94,7 +109,7 @@ call :main_banner
 echo Launching Chatbot in WSL2 environment...
 
 :: Use WSL to run the Python script inside the Linux environment
-wsl -d %WSL_DISTRIBUTION% %PYTHON_EXE_TO_USE% ./amdgpu-wsl-qwenchat.py
+wsl -d %WSL_DISTRIBUTION% %PYTHON_EXE_TO_USE% ./wsl2_amdgpu_chat.py
 
 echo.
 pause
@@ -137,6 +152,31 @@ if not "!errorPackages!"=="" (
 echo.
 pause
 goto main_menu
+
+:: Install CLBlast
+:install_clblas
+call :main_banner
+echo Installing CLBlast...
+
+:: Install necessary dependencies and clone CLBlast
+wsl -d %WSL_DISTRIBUTION% sudo apt-get install git cmake make -y
+wsl -d %WSL_DISTRIBUTION% git clone https://github.com/CNugteren/CLBlast.git
+
+:: Build and install CLBlast
+wsl -d %WSL_DISTRIBUTION% bash -c "cd CLBlast && mkdir build && cd build && cmake .. && make && sudo make install"
+
+:: Update persistence to track that CLBlast is installed
+echo clblas_installed=clblast >> %PERSISTENCE_FILE%
+
+echo CLBlast installed successfully.
+pause
+goto main_menu
+
+:: Invalid input, re-prompt user
+echo Invalid selection. Please choose either 1 or 2.
+pause
+goto install_clblas
+
 
 :end_of_file
 call :main_banner
